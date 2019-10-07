@@ -72,9 +72,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 model = tf.keras.models.load_model('model_v1.h5')
 
-# test change 111
-# test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
-#     rescale=1. / 255)
+test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
+    rescale=1. / 255)
 
 # X_sample = []
 # y_sample = []
