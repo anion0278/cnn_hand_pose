@@ -115,9 +115,6 @@ def train_model(nb_epoch):
 
     model = create_model()
 
-    # model.fit(X_train, y_train, batch_size=batch_size, nb_epoch=nb_epoch,
-    #           verbose=1, validation_data=train_datagen, callbacks=[tensorboard])
-
     model.fit_generator(train_datagen.flow(X_train, y_train, batch_size=batch_size),
                         steps_per_epoch=500,
                         epochs=nb_epoch,
