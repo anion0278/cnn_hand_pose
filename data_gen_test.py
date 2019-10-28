@@ -27,6 +27,31 @@ current_script_path = os.path.dirname(os.path.realpath(__file__))
 image_base = "state"
 dataset_dir = "data_gen_test"
 
+
+
+sometimes = lambda aug: iaa.Sometimes(0.5, aug)
+seq = iaa.Sequential([sometimes(iaa.Add(35)),
+    sometimes(iaa.AdditiveGaussianNoise(0.03)),
+    sometimes(iaa.Multiply(0.8)),
+    sometimes(iaa.AverageBlur(2)),
+    sometimes(iaa.SigmoidContrast(7)),
+    sometimes(iaa.GammaContrast(1.3)),
+    iaa.Affine(rotate=(-10, 10), translate_percent={"x": (-0.25, 0.25)}, mode='symmetric', cval=(0)),
+    iaa.PerspectiveTransform(scale=(0.04, 0.08)),
+    iaa.PiecewiseAffine(scale=(0.05, 0.1), mode='edge', cval=(0))],
+    random_order=True)  
+
+
+train_datagen = ImageDataGenerator(rescale=1. / 255, # change 0..255 to 0..1
+    shear_range=20,
+    zoom_range=0.2,
+    rotation_range=30,
+    width_shift_range=0.25,
+    height_shift_range=0.25,
+    preprocessing_function = seq.augment_image
+    )
+
+
 def parse_expected_value(img_name, name_base=image_base):
     result = []
     state_start = img_name.find(image_base)
@@ -63,18 +88,8 @@ def get_train_data():
 
 
 import matplotlib.pyplot as plt
-#img = np.random.rand(1, 500, 500, 3)
 img = cv2.resize(cv2.imread('dataset\state00111_img29_date16-10-2019_11#02#04.jpeg', cv2.IMREAD_GRAYSCALE), (image_size, image_size)).astype(np.float32);
 
-#image_paths = ["dataset\state00111_img29_date16-10-2019_11#02#04.jpeg", "state00011_img15_date16-10-2019_11#11#19.jpeg"]
-#
-#X_train, X_test, Y_train, Y_test = train_test_split(image_paths, [2,1], test_size=0.5)
-#
-#v = img.copy()
-#vv = np.array([v, v.copy()])
-#vvv = vv[ ..., np.newaxis]
-#custom_data_gen = data_generator.DataGenerator(vvv, [[1,2,3]], batch_size=2, augment=True, shuffle=True)
-#img_aug = custom_data_gen.__getitem__(index=1)
 
 img = img[np.newaxis, ..., np.newaxis]
 #datagenerator = ImageDataGenerator(horizontal_flip=True) # flips L to R
@@ -194,37 +209,3 @@ fig.suptitle('Zoom', fontsize=16)
 plt.draw()
 plt.waitforbuttonpress(0) # this will wait for indefinite time
 plt.close(fig)
-
-
-
-#while(True):
-#    img_grayscale = np.squeeze(next(datagenerator.flow(img))[0])
-#    plt.imshow(img_grayscale, cmap='gray')
-#    plt.show()
-
-
-#X_train, y_train = get_train_data()
-
-#generator = datagen.flow_from_directory('data_gen_test',target_size=(image_size,image_size),save_to_dir='data_gen',save_prefix='N',save_format='jpeg',batch_size=1)
-
-#batch = generator.next()
-#for img in generator:
-#    pass
-
-#image, y = load_single_img('data_gen_test\state00000_img1_date06-10-2019_20#48#24.jpeg', False)
-
-#train_datagen.fit(image)
-
-#aug_data = train_datagen.flow(X_train, y_train, batch_size=1, 
-    #save_to_dir='',     
-    #save_prefix='aug',        
-    #save_format='png')
-    #pass
-#datagen.fit(image)
-
-
-#for x, val in zip(datagen.flow(image,                    #image we chose
-#        save_to_dir='data_gen',     #this is where we figure out where to save
-#         save_prefix='aug',        # it will save the images as 'aug_0912' some number for every new augmented image
-#        save_format='jpeg'),range(10)) :     # here we define a range because we want 10 augmented images otherwise it will keep looping forever I think
-#    pass

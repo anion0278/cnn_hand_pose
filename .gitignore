@@ -5321,3 +5321,5 @@ valid/state01111_img31_date06-10-2019_20#51#33.jpeg
 valid/state10011_img2_date06-10-2019_20#55#08.jpeg
 /dataset
 /logs
+/real_time
+/__pycache__
