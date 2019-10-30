@@ -15,8 +15,8 @@ class ImageDataLoader:
     def load_single_img(self, img_relative_path):
         img_path = os.path.join(self.main_script_path, img_relative_path)
         print("Loading image from %s ..." % img_path)
-        X_img_data = np.array([self.__load_resized_grayscaled(img_path)])
-        y_expected = np.array([self.__parse_expected_value(img_relative_path)])
+        X_img_data = self.__load_resized_grayscaled(img_path)
+        y_expected = self.__parse_expected_value(img_relative_path)
         print("Loaded: " + img_relative_path + " -> " + str(y_expected))
         return X_img_data, y_expected
 

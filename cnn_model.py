@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+import numpy as np
 import tensorflow as tf
 
 from tensorflow.keras.models import Sequential
@@ -48,13 +49,13 @@ class CnnModel:
                             callbacks=[tensorboard])
         self.setup_graph()
 
-    def predict_image(self, X_img, y_expected):
+    def predict_single_image(self, X_img, y_expected):
         test_datagen = ImageDataGenerator(rescale=1. / 255)
-        testData = test_datagen.flow(X_img, y_expected, batch_size=1)
+        testData = test_datagen.flow(np.array([X_img]), np.array([y_expected]), batch_size=1)
         with session.as_default():
             with graph.as_default():
                 prediction = self.model.predict(testData)
-        return prediction
+        return np.squeeze(prediction)
 
     def setup_graph(self):
         self.model._make_predict_function()

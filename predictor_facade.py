@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import image_data_loader
 import tcp_server
 import cnn_model
@@ -9,15 +8,13 @@ import numpy as np
 from time import time
 
 # names
-
-current_model = "model_actual.h5"
 command_predict = "PredictImage:"
 
 # model and training
 filters_count = 32
 learning_rate = 0.0001
 batch_size = 128
-epochs_count = 5
+epochs_count = 50
 test_data_ratio = 0.02
 
 # communication
@@ -36,16 +33,17 @@ class PredictorFacade:
         model.train(X_data, y_data, epochs_count, batch_size, self.logs_dir, test_data_ratio)
         return model
 
-    def predict_single_img(self, img_name):
-        self.loaded_model = self.load_model(current_model)
+    def predict_single_img(self, img_name, model_name):
+        self.load_model(model_name)
         return self.predict_using_model(self.loaded_model, img_name)
 
     def predict_using_model(self, model, img_name):
         print("Predicting: " + img_name)
         X_predict, y_predict = self.data_loader.load_single_img(img_name)
-        result = np.round(model.predict_image(X_predict, y_predict), 2)
+        result = model.predict_single_image(X_predict, y_predict)
         print("expected: %s - predicted: %s" % (y_predict, result))
-        return result
+        result *= 100 # for graphical app
+        return "[%s; %s; %s; %s; %s;]" % (result[0],result[1],result[2],result[3],result[4])
 
     def service_mode(self):
         server = tcp_server.TcpServer(tcp_port, self.__predictor_callback)

@@ -24,7 +24,8 @@ image_size = 128
 
 if __name__ == "__main__":
 
-    sys.argv = [sys.argv[0], predictive_service]
+    #sys.argv = [sys.argv[0], predictive_service]
+    #sys.argv = [sys.argv[0], "predict", r"C:\Users\Stefan\source\repos\anion0278\cnn_hand_pose\real_time\state100-15-2-23-25_img94_date30-10-2019_11#45#32.jpeg"]
     #sys.argv = [sys.argv[0], "train"]
     print(sys.argv) 
 
@@ -54,7 +55,7 @@ if __name__ == "__main__":
 
     if (sys.argv[1] == "predict" and not(sys.argv[2].isspace())):
         print("Predicting %s" % sys.argv[2])
-        predictor.predict_single_img(sys.argv[2])
+        predictor.predict_single_img(sys.argv[2], current_model)
         sys.exit(0)
    
     if (len(sys.argv) == 3 and sys.argv[1] == predictive_service):
