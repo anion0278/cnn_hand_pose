@@ -1,0 +1,1 @@
+[![Board Status](https://dev.azure.com/StefanGrushko/300adc00-71ed-40eb-a5bb-a48b35d43831/6a1d190b-4972-4be4-be82-5dfee77d1753/_apis/work/boardbadge/f9315289-0fa3-4e01-b530-8487f87b52c1)](https://dev.azure.com/StefanGrushko/300adc00-71ed-40eb-a5bb-a48b35d43831/_boards/board/t/6a1d190b-4972-4be4-be82-5dfee77d1753/Microsoft.RequirementCategory)
